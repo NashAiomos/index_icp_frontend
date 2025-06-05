@@ -1,59 +1,150 @@
-# Index ICP Front End
+# Index ICP 前端
 
-ICP 区块链浏览器前端项目，用于查看 VUSD 和 LIKE 代币的交易记录。
+ICP 区块链浏览器前端项目，专为 VUSD 和 LIKE 代币的交易数据查看和分析而构建。
 
-## 功能特性
+## 📋 项目概述
 
-- 🔍 显示 VUSD 和 LIKE 代币的最新交易（各 50 条）
-- 📊 按时间顺序排列交易记录
-- 🔄 支持无限滚动加载更多交易
-- 🎨 支持亮色/暗色主题切换
-- 💰 显示代币统计信息（交易量、地址数等）
-- 📱 响应式设计，支持移动端浏览
+基于 React + TypeScript 的现代区块链浏览器前端应用，提供直观的界面来查看 ICP 网络上 VUSD 和 LIKE 代币的实时交易数据、账户信息和代币统计。
 
-## 环境配置
+## ✨ 功能特性
 
-在项目根目录创建 `.env` 文件，并添加以下内容：
+### 🏠 首页功能
+- 📊 代币概览卡片，显示 LIKE 和 VUSD 的关键统计数据
+- 📈 实时交易列表，展示最新 100 条交易记录
+- 🔄 自动刷新功能（20秒间隔），确保数据实时性
+- 📱 响应式设计，完美支持移动端和桌面端
 
+### 🔍 详细页面
+- **交易详情页**：查看单笔交易的完整信息
+- **地址详情页**：查看账户余额、交易历史和图表分析
+- **代币详情页**：查看特定代币的统计信息和交易记录
+
+### 🎨 用户体验
+- 🌗 亮色/暗色主题切换
+- 🚀 页面预加载优化（instant.page）
+- ⬆️ 返回顶部按钮
+- 🔍 智能搜索功能
+- 📊 余额变化图表展示
+- 🎯 新交易高亮提示
+
+### 🔧 技术特性
+- 💾 全局缓存系统，优化性能
+- 🔁 请求重试机制，提高稳定性
+- 📈 交互式图表（Recharts）
+- 🎯 TypeScript 类型安全
+- 🎨 Tailwind CSS 样式框架
+
+## 🏗️ 技术栈
+
+- **框架**: React 18.2.0
+- **语言**: TypeScript 4.9.5
+- **路由**: React Router Dom 6.30.1
+- **状态管理**: React Context + Hooks
+- **样式**: Tailwind CSS 3.4.0
+- **图表**: Recharts 2.15.3
+- **HTTP客户端**: Axios 1.9.0
+- **图标**: React Icons 4.12.0
+- **日期处理**: date-fns 4.1.0
+
+## 🚀 快速开始
+
+### 环境要求
+- Node.js >= 16
+- npm 或 yarn
+
+### 安装依赖
+```bash
+npm install
 ```
+
+### 环境配置
+在项目根目录创建 `.env` 文件：
+```env
 REACT_APP_API_URL=https://index-service.zkid.app/api
 ```
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### 启动开发服务器
+```bash
+npm start
+```
+访问 [http://localhost:3000](http://localhost:3000) 查看应用。
 
-## Available Scripts
+### 构建生产版本
+```bash
+npm run build
+```
 
-In the project directory, you can run:
+### 运行测试
+```bash
+npm test
+```
 
-### `npm start`
+## 📁 项目结构
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```
+src/
+├── components/          # 可复用组件
+│   ├── Header.tsx      # 头部导航组件
+│   ├── TokenCard.tsx   # 代币卡片组件
+│   ├── TransactionTable.tsx  # 交易表格组件
+│   ├── BalanceChart.tsx      # 余额图表组件
+│   └── ...
+├── pages/              # 页面组件
+│   ├── HomePage.tsx    # 首页
+│   ├── TransactionDetail.tsx  # 交易详情页
+│   ├── AddressDetail.tsx      # 地址详情页
+│   └── TokenDetail.tsx        # 代币详情页
+├── services/           # 服务层
+│   ├── api.ts         # API 服务
+│   └── globalCache.ts # 全局缓存服务
+├── contexts/           # React Context
+│   └── GlobalCacheContext.tsx
+├── hooks/              # 自定义 Hooks
+├── types/              # TypeScript 类型定义
+├── utils/              # 工具函数
+└── App.tsx            # 应用入口
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 🔌 API 集成
 
-### `npm test`
+项目通过 RESTful API 与后端服务通信，支持以下功能：
+- 获取代币信息和统计数据
+- 查询最新交易记录
+- 获取账户余额和交易历史
+- 搜索特定交易或地址
+- 获取交易详情
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🌐 路由配置
 
-### `npm run build`
+- `/` - 首页，展示代币概览和最新交易
+- `/transaction/:index` - 交易详情页
+- `/address/:address` - 地址详情页  
+- `/token/:symbol` - 代币详情页
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🎨 主题系统
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+项目支持亮色和暗色两种主题模式：
+- 自动保存用户主题偏好
+- 平滑的主题切换动画
+- 完整的暗色模式适配
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 📊 性能优化
 
-### `npm run eject`
+- **预加载策略**: 使用 instant.page 进行智能预加载
+- **缓存机制**: 全局缓存常用数据，减少重复请求
+- **懒加载**: 图表组件按需加载
+- **请求去重**: 避免重复的 API 调用
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 🔧 开发指南
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 代码规范
+- 使用 TypeScript 进行类型检查
+- 遵循 ESLint 规则
+- 组件采用函数式编程和 Hooks
+- 使用 Tailwind CSS 进行样式编写
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 新增功能
+1. 在 `types/` 目录定义相关类型
+2. 在 `services/` 目录添加 API 调用
+3. 在 `components/` 或 `pages/` 创建组件
+4. 更新路由配置（如需要）
