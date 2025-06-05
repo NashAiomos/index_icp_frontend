@@ -4,7 +4,7 @@ ICP 区块链浏览器前端项目，专为 VUSD 和 LIKE 代币的交易数据�
 
 ## 📋 项目概述
 
-基于 React + TypeScript 的现代区块链浏览器前端应用，提供直观的界面来查看 ICP 网络上 VUSD 和 LIKE 代币的实时交易数据、账户信息和代币统计。
+基于 React + TypeScript 的区块链浏览器前端，查看 ICP 网络上 VUSD 和 LIKE 代币的实时交易数据、账户信息和代币统计。
 
 ## 🚀 快速开始
 
