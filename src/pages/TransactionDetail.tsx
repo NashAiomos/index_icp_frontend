@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FiArrowLeft, FiCopy, FiCheckCircle } from 'react-icons/fi';
+import { FiArrowLeft, FiCopy, FiCheckCircle, FiArrowUpRight, FiArrowDownLeft, FiPlus, FiMinus, FiShield } from 'react-icons/fi';
+import { HiFire } from 'react-icons/hi';
 import Header from '../components/Header';
 import { ApiService } from '../services/api';
 import { Transaction, Token } from '../types';
@@ -73,6 +74,51 @@ const TransactionDetail: React.FC = () => {
     navigator.clipboard.writeText(text);
     setCopiedField(field);
     setTimeout(() => setCopiedField(null), 2000);
+  };
+
+  const getTransactionTypeInfo = (kind: string) => {
+    switch (kind?.toLowerCase()) {
+      case 'transfer':
+        return {
+          label: 'Transfer',
+          icon: <FiArrowUpRight className="mr-1" />,
+          bgColor: 'bg-blue-500/10',
+          textColor: 'text-blue-500',
+          borderColor: 'border-blue-500'
+        };
+      case 'mint':
+        return {
+          label: 'Mint',
+          icon: <FiPlus className="mr-1" />,
+          bgColor: 'bg-green-500/10',
+          textColor: 'text-green-500',
+          borderColor: 'border-green-500'
+        };
+      case 'burn':
+        return {
+          label: 'Burn',
+          icon: <HiFire className="mr-1" />,
+          bgColor: 'bg-red-500/10',
+          textColor: 'text-red-500',
+          borderColor: 'border-red-500'
+        };
+      case 'approve':
+        return {
+          label: 'Approve',
+          icon: <FiShield className="mr-1" />,
+          bgColor: 'bg-purple-500/10',
+          textColor: 'text-purple-500',
+          borderColor: 'border-purple-500'
+        };
+      default:
+        return {
+          label: 'Unknown',
+          icon: <FiArrowDownLeft className="mr-1" />,
+          bgColor: 'bg-gray-500/10',
+          textColor: 'text-gray-500',
+          borderColor: 'border-gray-500'
+        };
+    }
   };
 
   const handleAddressClick = (address: string) => {
@@ -183,6 +229,15 @@ const TransactionDetail: React.FC = () => {
                 <FiCheckCircle className="mr-1" />
                 Completed
               </span>
+            </div>
+
+            {/* Transaction Type */}
+            <div className="flex items-center justify-between">
+              <span className={`text-base font-semibold ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Type: </span>
+              <div className={`flex items-center px-3 py-1.5 rounded-full border ${getTransactionTypeInfo(transaction.kind).bgColor} ${getTransactionTypeInfo(transaction.kind).textColor} ${getTransactionTypeInfo(transaction.kind).borderColor} font-bold text-sm`}>
+                {getTransactionTypeInfo(transaction.kind).icon}
+                {getTransactionTypeInfo(transaction.kind).label}
+              </div>
             </div>
 
             {/* Timestamp */}

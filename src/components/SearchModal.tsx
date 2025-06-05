@@ -11,6 +11,7 @@ interface SearchModalProps {
 const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, isDark }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedToken, setSelectedToken] = useState<'like' | 'vusd'>('vusd');
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
@@ -87,7 +88,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, isDark }) =>
           navigate(`/address/${trimmedQuery}`);
           break;
         case 'transaction':
-          navigate(`/transaction/${trimmedQuery}`);
+          navigate(`/transaction/${trimmedQuery}?token=${selectedToken.toUpperCase()}`);
           break;
         default:
           // 未知类型，可以显示错误提示或尝试智能匹配
@@ -98,6 +99,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, isDark }) =>
       // 关闭模态框
       onClose();
       setSearchQuery('');
+      // 保持代币选择状态，不重置
     } catch (error) {
       console.error('搜索错误:', error);
     } finally {
@@ -124,7 +126,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, isDark }) =>
       case 'address':
         return 'Address search';
       case 'transaction':
-        return 'Transaction index search';
+        return `Transaction index search (${selectedToken.toUpperCase()})`;
       default:
         return 'Please enter a valid address or transaction index';
     }
@@ -183,21 +185,69 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, isDark }) =>
                     isDark
                       ? 'bg-dark-bg border-dark-border text-white placeholder-gray-500'
                       : 'bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-400'
-                  } border rounded-xl py-4 px-6 pl-14 text-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all disabled:opacity-50`}
+                  } border rounded-xl py-4 px-6 pl-14 pr-20 text-lg focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all disabled:opacity-50`}
                 />
                 <FiSearch className={`absolute left-5 top-1/2 transform -translate-y-1/2 ${
                   isDark ? 'text-gray-500' : 'text-gray-400'
                 } text-xl`} />
                 
-                {isLoading && (
-                  <div className="absolute right-5 top-1/2 transform -translate-y-1/2">
-                    <div className={`animate-spin rounded-full h-5 w-5 border-2 ${
-                      isDark ? 'border-gray-600 border-t-white' : 'border-gray-300 border-t-gray-600'
-                    }`} />
-                  </div>
-                )}
+                {/* 搜索按钮 */}
+                <button
+                  type="submit"
+                  disabled={isLoading || !searchQuery.trim()}
+                  className={`absolute right-2 top-1/2 transform -translate-y-1/2 ${
+                    isDark
+                      ? 'bg-primary-blue hover:bg-blue-600 disabled:bg-gray-700'
+                      : 'bg-primary-blue hover:bg-blue-600 disabled:bg-gray-300'
+                  } text-white rounded-lg px-4 py-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-[60px]`}
+                >
+                  {isLoading ? (
+                    <div className={`animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent`} />
+                  ) : (
+                    <FiSearch className="text-sm" />
+                  )}
+                </button>
               </div>
               
+              {/* 代币选择按钮 */}
+              {detectSearchType(searchQuery.trim()) === 'transaction' && (
+                <div className="space-y-2">
+                  <p className={`text-sm font-medium ${
+                    isDark ? 'text-gray-300' : 'text-gray-700'
+                  }`}>
+                    Select Token:
+                  </p>
+                  <div className="flex space-x-3">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedToken('vusd')}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                        selectedToken === 'vusd'
+                          ? 'bg-primary-blue text-white shadow-md'
+                          : isDark
+                          ? 'bg-dark-bg border border-dark-border text-gray-300 hover:text-white hover:border-gray-500'
+                          : 'bg-gray-100 border border-gray-300 text-gray-600 hover:text-gray-900 hover:border-gray-400'
+                      }`}
+                    >
+                      VUSD
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedToken('like')}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                        selectedToken === 'like'
+                          ? 'bg-primary-blue text-white shadow-md'
+                          : isDark
+                          ? 'bg-dark-bg border border-dark-border text-gray-300 hover:text-white hover:border-gray-500'
+                          : 'bg-gray-100 border border-gray-300 text-gray-600 hover:text-gray-900 hover:border-gray-400'
+                      }`}
+                    >
+                      LIKE
+                    </button>
+                  </div>
+                </div>
+              )}
+
               {/* 搜索提示 */}
               <p className={`text-sm ${
                 isDark ? 'text-gray-400' : 'text-gray-500'
@@ -233,7 +283,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, isDark }) =>
                         : 'text-gray-600 hover:text-gray-900'
                     } hover:underline transition-colors`}
                   >
-                    • Transaction Index: 201392
+                    • Transaction Index: 201392 (select token above)
                   </button>
                 </div>
               </div>
