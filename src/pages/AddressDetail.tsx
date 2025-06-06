@@ -466,9 +466,9 @@ const AddressDetail: React.FC = () => {
                 : 'bg-white border-gray-200 shadow-sm'
             } border rounded-lg p-6`}>
               <div className="flex items-center mb-4">
-                <div className="w-8 h-8 rounded bg-yellow-500/10 flex items-center justify-center mr-3">
-                  <svg className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M5,9V21H1V9H5M9,21A2,2 0 0,1 7,19V9C7,8.45 7.22,7.95 7.59,7.59L14.17,1L15.23,2.06C15.5,2.33 15.67,2.7 15.67,3.11L15.64,3.43L14.69,8H21C21.53,8 22,8.21 22.39,8.6C22.78,8.99 23,9.47 23,10A1,1 0 0,1 22.83,10.17L19.05,18.05C18.65,18.88 17.86,19.45 16.95,19.45H9M13.6,7L14.5,3.43L9,8.95V19.5H16.95L20.72,11.5H13.6V7Z"/>
+                <div className="w-8 h-8 rounded bg-green-500/10 flex items-center justify-center mr-3">
+                  <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                   </svg>
                 </div>
                 <h2 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>

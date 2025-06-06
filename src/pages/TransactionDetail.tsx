@@ -306,10 +306,10 @@ const TransactionDetail: React.FC = () => {
               </span>
             </div>
 
-            <div className={`border-t ${isDark ? 'border-dark-border' : 'border-gray-200'} pt-6`} />
+            <div className={`border-t ${isDark ? 'border-dark-border' : 'border-gray-200'} pt-6 sm:pt-0`} />
 
             {/* From */}
-            <div className="space-y-1">
+            <div className="space-y-1 sm:space-y-0 sm:flex sm:items-center sm:justify-between">
               <div className="flex items-center">
                 <span className={`text-base font-semibold ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>From :</span>
               </div>
@@ -325,7 +325,7 @@ const TransactionDetail: React.FC = () => {
             </div>
 
             {/* To */}
-            <div className="space-y-1">
+            <div className="space-y-1 sm:space-y-0 sm:flex sm:items-center sm:justify-between">
               <div className="flex items-center">
                 <span className={`text-base font-semibold ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                   {transaction.kind === 'approve' ? 'Spender:' : 'To :'}
@@ -342,7 +342,7 @@ const TransactionDetail: React.FC = () => {
               </div>
             </div>
 
-            <div className={`border-t ${isDark ? 'border-dark-border' : 'border-gray-200'} pt-6`} />
+            <div className={`border-t ${isDark ? 'border-dark-border' : 'border-gray-200'} pt-6 sm:pt-0`} />
 
             {/* Amount */}
             <div className="flex items-center justify-between">

@@ -31,8 +31,8 @@ const Header: React.FC<HeaderProps> = ({ isDark }) => {
                 <img 
                   src="/logo.svg" 
                   alt="Vly Explorer" 
-                  style={{ height: '3rem' }} 
-                  className="w-auto hover:opacity-70 transition-opacity sm:h-16 lg:h-20" 
+                  style={{ height: '4.3rem' }} 
+                  className="w-auto hover:opacity-70 transition-opacity sm:h-24 md:h-28 lg:h-32 xl:h-36" 
                 />
               </Link>
             </div>
