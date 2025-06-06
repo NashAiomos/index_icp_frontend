@@ -86,7 +86,7 @@ const HomePage: React.FC = () => {
     <div className={`min-h-screen ${isDark ? 'bg-dark-bg' : 'bg-gray-50'}`}>
       <Header isDark={isDark} />
       
-      <main className="container mx-auto" style={{ padding: '1rem 3rem' }}>
+      <main className="container mx-auto px-2 sm:px-4 md:px-6 lg:px-12" style={{ paddingTop: '0.5rem', paddingBottom: '1rem' }}>
         {error && (
           <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-lg mb-6">
             {error}
@@ -94,7 +94,7 @@ const HomePage: React.FC = () => {
         )}
 
         {/* Token Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-2 gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 md:mb-8">
           {/* LIKE Token Card */}
           {likeStats && (
             <TokenCard
@@ -126,7 +126,7 @@ const HomePage: React.FC = () => {
 
         {/* Loading state for cards */}
         {cacheLoading && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-2 gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 md:mb-8">
             {[1, 2].map(i => (
               <div key={i} className={`${
                 isDark 

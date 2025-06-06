@@ -31,6 +31,61 @@ code {
     monospace;
 }
 
+/* 响应式字体大小调整 */
+@media (max-width: 480px) {
+  .responsive-text-sm {
+    font-size: 0.75rem !important;
+  }
+  
+  .responsive-text-base {
+    font-size: 0.875rem !important;
+  }
+  
+  .responsive-card-padding {
+    padding: 0.75rem !important;
+  }
+
+  table td {
+    padding: 0.75rem 0.5rem !important;
+    font-size: 0.625rem !important;
+  }
+  
+  table th {
+    padding: 0.75rem 0.25rem !important;
+    font-size: 0.5rem !important;
+  }
+}
+
+@media (max-width: 320px) {
+  .responsive-text-sm {
+    font-size: 0.625rem !important;
+  }
+  
+  .responsive-text-base {
+    font-size: 0.75rem !important;
+  }
+  
+  .responsive-card-padding {
+    padding: 0.5rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  table td {
+    padding: 0.75rem 0.5rem !important;
+    font-size: 0.75rem !important;
+  }
+  
+  table th {
+    padding: 0.75rem 0.5rem !important;
+    font-size: 0.625rem !important;
+  }
+  
+  .table-hide-mobile {
+    display: none !important;
+  }
+}
+
 /* 自定义滚动条 */
 ::-webkit-scrollbar {
   width: 8px;

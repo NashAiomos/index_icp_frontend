@@ -175,7 +175,8 @@ const TransactionRow = React.memo<TransactionRowProps>(({
 
   return (
     <tr 
-      className={`border-b ${
+      onClick={() => onTransactionClick(tx.index)}
+      className={`border-b cursor-pointer ${
         isDark 
           ? 'border-dark-border hover:bg-dark-border/30' 
           : 'border-gray-100 hover:bg-gray-50'
@@ -184,13 +185,12 @@ const TransactionRow = React.memo<TransactionRowProps>(({
       <td className="px-6 py-4">
         <div className="flex items-center space-x-2">
           <span 
-            onClick={() => onTransactionClick(tx.index)}
-            className="text-primary-blue hover:underline cursor-pointer"
+            className="text-primary-blue hover:underline"
           >
             {tx.index}
           </span>
           <button
-            onClick={() => onCopy(tx.index.toString())}
+            onClick={(e) => { e.stopPropagation(); onCopy(tx.index.toString()); }}
             className={`${
               isDark ? 'text-gray-500 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'
             } transition-colors cursor-pointer`}
@@ -205,10 +205,10 @@ const TransactionRow = React.memo<TransactionRowProps>(({
       <td className={`px-6 py-4 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
         {formatDateTime(tx.timestamp)}
       </td>
-      <td className="px-6 py-4">
+      <td className="px-6 py-4 table-hide-mobile">
         <div className="flex items-center space-x-2">
           <span 
-            onClick={() => onAddressClick(from)}
+            onClick={(e) => { e.stopPropagation(); onAddressClick(from); }}
             className={`${
               isDark ? 'text-gray-300' : 'text-gray-700'
             } hover:text-primary-blue cursor-pointer ${
@@ -218,7 +218,7 @@ const TransactionRow = React.memo<TransactionRowProps>(({
           </span>
           {from !== 'Minted' && from !== 'Unknown' && (
             <button
-              onClick={() => onCopy(from)}
+              onClick={(e) => { e.stopPropagation(); onCopy(from); }}
               className={`${
                 isDark ? 'text-gray-500 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'
               } transition-colors cursor-pointer`}
@@ -228,13 +228,13 @@ const TransactionRow = React.memo<TransactionRowProps>(({
           )}
         </div>
       </td>
-      <td className="px-6 py-4 text-center">
+      <td className="px-6 py-4 text-center table-hide-mobile">
         <FiArrowRight className={isDark ? 'text-gray-500' : 'text-gray-400'} />
       </td>
-      <td className="px-6 py-4">
+      <td className="px-6 py-4 table-hide-mobile">
         <div className="flex items-center space-x-2">
           <span 
-            onClick={() => onAddressClick(to)}
+            onClick={(e) => { e.stopPropagation(); onAddressClick(to); }}
             className={`${
               isDark ? 'text-gray-300' : 'text-gray-700'
             } hover:text-primary-blue cursor-pointer ${
@@ -244,7 +244,7 @@ const TransactionRow = React.memo<TransactionRowProps>(({
           </span>
           {to !== 'Burned' && to !== 'Unknown' && (
             <button
-              onClick={() => onCopy(to)}
+              onClick={(e) => { e.stopPropagation(); onCopy(to); }}
               className={`${
                 isDark ? 'text-gray-500 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'
               } transition-colors cursor-pointer`}
@@ -314,7 +314,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({ transactions, token
       } border rounded-lg overflow-hidden`}>
         <div 
           ref={headerRef}
-          className={`px-6 py-4 border-b ${isDark ? 'border-dark-border' : 'border-gray-200'}`}
+          className={`px-2 sm:px-4 lg:px-6 py-2 sm:py-3 lg:py-4 border-b ${isDark ? 'border-dark-border' : 'border-gray-200'}`}
         >
           <h2 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>Latest Transactions</h2>
         </div>
@@ -323,28 +323,18 @@ const TransactionTable: React.FC<TransactionTableProps> = ({ transactions, token
           <table className="w-full">
             <thead>
               <tr className={`border-b ${isDark ? 'border-dark-border' : 'border-gray-200'}`}>
-                <th className={`text-left px-6 py-3 text-sm font-medium ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                <th className={`text-left px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-xs sm:text-sm font-medium ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                   Transactions Index
                 </th>
                 <th className={`text-left px-6 py-3 text-sm font-medium ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                   Type
                 </th>
-                <th className={`text-left px-6 py-3 text-sm font-medium ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  Time
-                </th>
-                <th className={`text-left px-6 py-3 text-sm font-medium ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  From
-                </th>
-                <th className="text-center px-6 py-3 text-sm font-medium"></th>
-                <th className={`text-left px-6 py-3 text-sm font-medium ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  To
-                </th>
-                <th className={`text-right px-6 py-3 text-sm font-medium ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  Value
-                </th>
-                <th className={`text-center px-6 py-3 text-sm font-medium ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                  Token
-                </th>
+                <th scope="col" className={`px-6 py-3 font-medium ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Time</th>
+                <th scope="col" className={`px-6 py-3 font-medium ${isDark ? 'text-gray-300' : 'text-gray-600'} table-hide-mobile`}>From</th>
+                <th scope="col" className="px-6 py-3 table-hide-mobile"></th>
+                <th scope="col" className={`px-6 py-3 font-medium ${isDark ? 'text-gray-300' : 'text-gray-600'} table-hide-mobile`}>To</th>
+                <th scope="col" className={`px-6 py-3 font-medium ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Value</th>
+                <th scope="col" className={`px-6 py-3 font-medium ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>Token</th>
               </tr>
             </thead>
             <tbody>

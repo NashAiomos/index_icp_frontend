@@ -244,7 +244,7 @@ const TransactionDetail: React.FC = () => {
   return (
     <div className={`min-h-screen ${isDark ? 'bg-dark-bg' : 'bg-gray-50'}`}>
       <Header isDark={isDark} />
-      <div className="container mx-auto" style={{ padding: '1rem 3rem' }}>
+      <div className="container mx-auto px-2 sm:px-4 md:px-6 lg:px-12" style={{ paddingTop: '0.5rem', paddingBottom: '1rem' }}>
         {/* Back button */}
         <button
           onClick={() => navigate('/')}
@@ -309,12 +309,14 @@ const TransactionDetail: React.FC = () => {
             <div className={`border-t ${isDark ? 'border-dark-border' : 'border-gray-200'} pt-6`} />
 
             {/* From */}
-            <div className="flex items-center justify-between">
-              <span className={`text-base font-semibold ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>From :</span>
+            <div className="space-y-1">
+              <div className="flex items-center">
+                <span className={`text-base font-semibold ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>From :</span>
+              </div>
               <div className="flex items-center">
                 <span 
                   onClick={() => handleAddressClick(fromAddress)}
-                  className={`font-mono font-bold text-primary-blue hover:underline cursor-pointer break-all`}
+                  className={`font-mono font-bold text-primary-blue hover:underline cursor-pointer break-all text-sm sm:text-base`}
                 >
                   {fromAddress}
                 </span>
@@ -323,14 +325,16 @@ const TransactionDetail: React.FC = () => {
             </div>
 
             {/* To */}
-            <div className="flex items-center justify-between">
-              <span className={`text-base font-semibold ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                {transaction.kind === 'approve' ? 'Spender:' : 'To :'}
-              </span>
+            <div className="space-y-1">
+              <div className="flex items-center">
+                <span className={`text-base font-semibold ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                  {transaction.kind === 'approve' ? 'Spender:' : 'To :'}
+                </span>
+              </div>
               <div className="flex items-center">
                 <span 
                   onClick={() => handleAddressClick(toAddress)}
-                  className={`font-mono font-bold text-primary-blue hover:underline cursor-pointer break-all`}
+                  className={`font-mono font-bold text-primary-blue hover:underline cursor-pointer break-all text-sm sm:text-base`}
                 >
                   {toAddress}
                 </span>

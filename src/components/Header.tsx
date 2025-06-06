@@ -22,7 +22,7 @@ const Header: React.FC<HeaderProps> = ({ isDark }) => {
   return (
     <>
       <header className={`${isDark ? 'bg-dark-bg border-dark-border' : 'border-gray-200'}`}>
-        <div className="container mx-auto" style={{ padding: '0 3rem' }}>
+        <div className="container mx-auto px-2 sm:px-4 md:px-6 lg:px-12 py-2 sm:py-3 lg:py-4">
           <div className="flex items-center justify-between">
 
             {/* Logo */}
@@ -31,8 +31,8 @@ const Header: React.FC<HeaderProps> = ({ isDark }) => {
                 <img 
                   src="/logo.svg" 
                   alt="Vly Explorer" 
-                  style={{ height: '5rem' }} 
-                  className="w-auto hover:opacity-70 transition-opacity" 
+                  style={{ height: '3rem' }} 
+                  className="w-auto hover:opacity-70 transition-opacity sm:h-16 lg:h-20" 
                 />
               </Link>
             </div>
@@ -50,7 +50,8 @@ const Header: React.FC<HeaderProps> = ({ isDark }) => {
                     } border rounded-lg py-2.5 px-4 pl-10 focus:outline-none focus:border-primary-blue transition-colors hover:border-primary-blue cursor-pointer select-none`}
                 >
                   <span className={`${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-                    Search addresses or transaction index...
+                    <span className="hidden sm:inline">Search addresses or transaction index...</span>
+                    <span className="inline sm:hidden">Search...</span>
                   </span>
                 </div>
                 <FiSearch className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${isDark ? 'text-gray-500' : 'text-gray-400'

@@ -140,7 +140,7 @@ const TokenDetail: React.FC = () => {
     <div className={`min-h-screen ${isDark ? 'bg-dark-bg' : 'bg-gray-50'}`}>
       <Header isDark={isDark} />
       
-      <main className="container mx-auto" style={{ padding: '1rem 3rem' }}>
+      <main className="container mx-auto px-2 sm:px-4 md:px-6 lg:px-12" style={{ paddingTop: '0.5rem', paddingBottom: '1rem' }}>
         {error && (
           <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-lg mb-6">
             {error}

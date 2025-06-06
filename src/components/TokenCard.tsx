@@ -54,38 +54,38 @@ const TokenCard: React.FC<TokenCardProps> = ({
         isDark 
           ? 'bg-dark-card border-dark-border' 
           : 'bg-white border-gray-200 shadow-sm'
-      } border rounded-lg p-6 hover:border-gray-400 transition-colors cursor-pointer`}>
-      <div className="flex items-center mb-6">
-        <div className="w-12 h-12 flex items-center justify-center">
+      } border rounded-lg responsive-card-padding p-3 sm:p-4 lg:p-6 hover:border-gray-400 transition-colors cursor-pointer`}>
+      <div className="flex items-center mb-3 sm:mb-4 lg:mb-6">
+        <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 flex items-center justify-center">
           <img 
             src={getLogoPath(symbol)} 
             alt={`${symbol} Logo`} 
-            className="w-12 h-12 object-contain"
+            className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 object-contain"
           />
         </div>
-        <div className="ml-4">
-          <h3 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{symbol}</h3>
-          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{name}</p>
+        <div className="ml-2 sm:ml-3 lg:ml-4">
+          <h3 className={`text-lg sm:text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{symbol}</h3>
+          <p className={`text-xs sm:text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{name}</p>
         </div>
       </div>
 
-      {/* 横向布局的统计数据 */}
-      <div className="grid grid-cols-3 gap-4">
-        <div>
-          <p className={`text-sm mb-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Total Transactions</p>
-          <p className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+      {/* 响应式布局的统计数据 */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 lg:gap-4">
+        <div className="text-center sm:text-left">
+          <p className={`responsive-text-sm text-xs sm:text-sm mb-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Total Transactions</p>
+          <p className={`responsive-text-base text-sm sm:text-base lg:text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'} break-all`}>
             <RollingNumber value={totalTransactionCount} />
           </p>
         </div>
-        <div>
-          <p className={`text-sm mb-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Total Supply</p>
-          <p className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+        <div className="text-center sm:text-left">
+          <p className={`responsive-text-sm text-xs sm:text-sm mb-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Total Supply</p>
+          <p className={`responsive-text-base text-sm sm:text-base lg:text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'} break-all`}>
             <RollingNumber value={formattedTotalSupply} />
           </p>
         </div>
-        <div>
-          <p className={`text-sm mb-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Holding Accounts</p>
-          <p className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+        <div className="text-center sm:text-left">
+          <p className={`responsive-text-sm text-xs sm:text-sm mb-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Holding Accounts</p>
+          <p className={`responsive-text-base text-sm sm:text-base lg:text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'} break-all`}>
             <RollingNumber value={totalAddresses.toString()} />
           </p>
         </div>
