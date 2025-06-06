@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import RollingNumber from './RollingNumber';
 import { Token } from '../types';
+import { formatTokenAmount } from '../utils/format';
 
 interface TokenCardProps {
   symbol: string;
@@ -41,6 +42,11 @@ const TokenCard: React.FC<TokenCardProps> = ({
     return '/logo.svg'; // 默认logo
   };
 
+  // 格式化总供应量，考虑代币小数位数
+  const formattedTotalSupply = token 
+    ? formatTokenAmount(totalSupply, token.decimals)
+    : totalSupply;
+
   return (
     <div 
       onClick={handleClick}
@@ -74,7 +80,7 @@ const TokenCard: React.FC<TokenCardProps> = ({
         <div>
           <p className={`text-sm mb-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Total Supply</p>
           <p className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-            <RollingNumber value={totalSupply} />
+            <RollingNumber value={formattedTotalSupply} />
           </p>
         </div>
         <div>

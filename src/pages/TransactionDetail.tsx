@@ -172,16 +172,74 @@ const TransactionDetail: React.FC = () => {
     );
   }
 
-  const fromAddress = transaction.from 
-    ? (typeof transaction.from === 'string' ? transaction.from : accountToString(transaction.from))
-    : 'Unknown';
-  const toAddress = transaction.to 
-    ? (typeof transaction.to === 'string' ? transaction.to : accountToString(transaction.to))
-    : (transaction.spender 
-        ? (typeof transaction.spender === 'string' ? transaction.spender : accountToString(transaction.spender))
-        : 'Unknown');
-  const amount = transaction.amount ? formatTokenAmount(transaction.amount, token.decimals) : '0';
-  const fee = transaction.fee ? formatTokenAmount(transaction.fee, token.decimals) : '0';
+  // 根据交易类型提取正确的地址和金额信息
+  const getTransactionData = () => {
+    const kind = transaction.kind?.toLowerCase();
+    
+    switch (kind) {
+      case 'transfer':
+        if (transaction.transfer) {
+          return {
+            fromAddress: transaction.transfer.from ? accountToString(transaction.transfer.from) : 'Unknown',
+            toAddress: transaction.transfer.to ? accountToString(transaction.transfer.to) : 'Unknown',
+            amount: transaction.transfer.amount && transaction.transfer.amount.length > 0 ? transaction.transfer.amount[0] : '0',
+            fee: transaction.transfer.fee && transaction.transfer.fee.length > 0 ? transaction.transfer.fee[0] : '0'
+          };
+        }
+        break;
+      
+      case 'burn':
+        if (transaction.burn) {
+          return {
+            fromAddress: transaction.burn.from ? accountToString(transaction.burn.from) : 'Unknown',
+            toAddress: 'Burned',
+            amount: transaction.burn.amount && transaction.burn.amount.length > 0 ? transaction.burn.amount[0] : '0',
+            fee: '0'
+          };
+        }
+        break;
+      
+      case 'approve':
+        if (transaction.approve) {
+          return {
+            fromAddress: transaction.approve.from ? accountToString(transaction.approve.from) : 'Unknown',
+            toAddress: transaction.approve.spender ? accountToString(transaction.approve.spender) : 'Unknown',
+            amount: transaction.approve.amount && transaction.approve.amount.length > 0 ? transaction.approve.amount[0] : '0',
+            fee: transaction.approve.fee && transaction.approve.fee.length > 0 ? transaction.approve.fee[0] : '0'
+          };
+        }
+        break;
+      
+      case 'mint':
+        if (transaction.mint) {
+          return {
+            fromAddress: 'Minted',
+            toAddress: transaction.mint.to ? accountToString(transaction.mint.to) : 'Unknown',
+            amount: transaction.mint.amount && transaction.mint.amount.length > 0 ? transaction.mint.amount[0] : '0',
+            fee: '0'
+          };
+        }
+        break;
+    }
+    
+    // 向后兼容：处理旧格式
+    return {
+      fromAddress: transaction.from 
+        ? (typeof transaction.from === 'string' ? transaction.from : accountToString(transaction.from))
+        : 'Unknown',
+      toAddress: transaction.to 
+        ? (typeof transaction.to === 'string' ? transaction.to : accountToString(transaction.to))
+        : (transaction.spender 
+            ? (typeof transaction.spender === 'string' ? transaction.spender : accountToString(transaction.spender))
+            : 'Unknown'),
+      amount: transaction.amount || '0',
+      fee: transaction.fee || '0'
+    };
+  };
+
+  const { fromAddress, toAddress, amount: rawAmount, fee: rawFee } = getTransactionData();
+  const amount = formatTokenAmount(rawAmount, token.decimals);
+  const fee = formatTokenAmount(rawFee, token.decimals);
 
   return (
     <div className={`min-h-screen ${isDark ? 'bg-dark-bg' : 'bg-gray-50'}`}>

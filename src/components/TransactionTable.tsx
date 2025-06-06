@@ -62,85 +62,72 @@ const TransactionRow = React.memo<TransactionRowProps>(({
     let to = 'Unknown';
     let amount = '0';
     
-    // 处理API返回的直接格式（字段在顶层）
-    if (tx.from && tx.amount) {
-      from = typeof tx.from === 'string' ? tx.from : accountToString(tx.from);
-      amount = tx.amount;
+    // 首先根据交易类型处理嵌套格式
+    const kind = tx.kind?.toLowerCase();
+    
+    switch (kind) {
+      case 'transfer':
+        if (tx.transfer) {
+          from = tx.transfer.from ? accountToString(tx.transfer.from) : 'Unknown';
+          to = tx.transfer.to ? accountToString(tx.transfer.to) : 'Unknown';
+          amount = tx.transfer.amount && tx.transfer.amount.length > 0 ? tx.transfer.amount[0] : '0';
+        } else if (tx.from && tx.to && tx.amount) {
+          // 向后兼容：处理API返回的直接格式
+          from = typeof tx.from === 'string' ? tx.from : accountToString(tx.from);
+          to = typeof tx.to === 'string' ? tx.to : accountToString(tx.to);
+          amount = tx.amount;
+        }
+        break;
       
-      // 根据kind类型确定to字段
-      const kind = tx.kind?.toLowerCase();
-      switch (kind) {
-        case 'burn':
+      case 'burn':
+        if (tx.burn) {
+          from = tx.burn.from ? accountToString(tx.burn.from) : 'Unknown';
           to = 'Burned';
-          break;
-        case 'approve':
-          if ((tx as any).spender) {
-            to = typeof (tx as any).spender === 'string' ? (tx as any).spender : accountToString((tx as any).spender);
-          }
-          break;
-        case 'transfer':
-          if (tx.to) {
-            to = typeof tx.to === 'string' ? tx.to : accountToString(tx.to);
-          }
-          break;
-        case 'mint':
-          from = 'Minted';
-          if (tx.to) {
-            to = typeof tx.to === 'string' ? tx.to : accountToString(tx.to);
-          }
-          break;
-        default:
-          if (tx.to) {
-            to = typeof tx.to === 'string' ? tx.to : accountToString(tx.to);
-          }
-          break;
-      }
-    } else {
-      // 处理嵌套格式
-      const kind = tx.kind?.toLowerCase();
+          amount = tx.burn.amount && tx.burn.amount.length > 0 ? tx.burn.amount[0] : '0';
+        } else if (tx.from && tx.amount) {
+          // 向后兼容：处理API返回的直接格式
+          from = typeof tx.from === 'string' ? tx.from : accountToString(tx.from);
+          to = 'Burned';
+          amount = tx.amount;
+        }
+        break;
       
-      switch (kind) {
-        case 'transfer':
-          if (tx.transfer) {
-            from = tx.transfer.from ? accountToString(tx.transfer.from) : 'Unknown';
-            to = tx.transfer.to ? accountToString(tx.transfer.to) : 'Unknown';
-            amount = tx.transfer.amount && tx.transfer.amount.length > 0 ? tx.transfer.amount[0] : '0';
-          }
-          break;
-        
-        case 'burn':
-          if (tx.burn) {
-            from = tx.burn.from ? accountToString(tx.burn.from) : 'Unknown';
-            to = 'Burned';
-            amount = tx.burn.amount && tx.burn.amount.length > 0 ? tx.burn.amount[0] : '0';
-          }
-          break;
-        
-        case 'approve':
-          if (tx.approve) {
-            from = tx.approve.from ? accountToString(tx.approve.from) : 'Unknown';
-            to = tx.approve.spender ? accountToString(tx.approve.spender) : 'Unknown';
-            amount = tx.approve.amount && tx.approve.amount.length > 0 ? tx.approve.amount[0] : '0';
-          }
-          break;
-        
-        case 'mint':
-          if (tx.mint) {
-            from = 'Minted';
-            to = tx.mint.to ? accountToString(tx.mint.to) : 'Unknown';
-            amount = tx.mint.amount && tx.mint.amount.length > 0 ? tx.mint.amount[0] : '0';
-          }
-          break;
-        
-        default:
-          // 如果没有明确的交易类型，尝试从顶层字段读取（向后兼容）
-          if (tx.from || tx.to) {
-            from = tx.from ? (typeof tx.from === 'string' ? tx.from : accountToString(tx.from)) : 'Unknown';
-            to = tx.to ? (typeof tx.to === 'string' ? tx.to : accountToString(tx.to)) : 'Unknown';
-            amount = tx.amount || '0';
-          }
-          break;
-      }
+      case 'approve':
+        if (tx.approve) {
+          from = tx.approve.from ? accountToString(tx.approve.from) : 'Unknown';
+          to = tx.approve.spender ? accountToString(tx.approve.spender) : 'Unknown';
+          amount = tx.approve.amount && tx.approve.amount.length > 0 ? tx.approve.amount[0] : '0';
+        } else if (tx.from && tx.amount) {
+          // 向后兼容：处理API返回的直接格式
+          from = typeof tx.from === 'string' ? tx.from : accountToString(tx.from);
+          to = (tx as any).spender 
+            ? (typeof (tx as any).spender === 'string' ? (tx as any).spender : accountToString((tx as any).spender))
+            : 'Unknown';
+          amount = tx.amount;
+        }
+        break;
+      
+      case 'mint':
+        if (tx.mint) {
+          from = 'Minted';
+          to = tx.mint.to ? accountToString(tx.mint.to) : 'Unknown';
+          amount = tx.mint.amount && tx.mint.amount.length > 0 ? tx.mint.amount[0] : '0';
+        } else if (tx.amount) {
+          // 向后兼容：处理API返回的直接格式
+          from = 'Minted';
+          to = tx.to ? (typeof tx.to === 'string' ? tx.to : accountToString(tx.to)) : 'Unknown';
+          amount = tx.amount;
+        }
+        break;
+      
+      default:
+        // 如果没有明确的交易类型，尝试从顶层字段读取（向后兼容）
+        if (tx.from && tx.amount) {
+          from = typeof tx.from === 'string' ? tx.from : accountToString(tx.from);
+          amount = tx.amount;
+          to = tx.to ? (typeof tx.to === 'string' ? tx.to : accountToString(tx.to)) : 'Unknown';
+        }
+        break;
     }
     
     const displayAmount = formatTokenAmount(amount, tokenInfo.decimals);

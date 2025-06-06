@@ -88,7 +88,9 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, isDark }) =>
           navigate(`/address/${trimmedQuery}`);
           break;
         case 'transaction':
-          navigate(`/transaction/${trimmedQuery}?token=${selectedToken.toUpperCase()}`);
+          // 确保代币参数正确转换为大写
+          const tokenParam = selectedToken === 'like' ? 'LIKE' : 'VUSD';
+          navigate(`/transaction/${trimmedQuery}?token=${tokenParam}`);
           break;
         default:
           // 未知类型，可以显示错误提示或尝试智能匹配

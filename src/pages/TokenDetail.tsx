@@ -22,6 +22,7 @@ import { ApiService } from '../services/api';
 import { useTheme } from '../hooks/useTheme';
 import { useAutoRefreshTransactions } from '../hooks/useAutoRefreshTransactions';
 import { useGlobalCache } from '../contexts/GlobalCacheContext';
+import { formatTokenAmount } from '../utils/format';
 
 const TokenDetail: React.FC = () => {
   const { symbol } = useParams<{ symbol: string }>();
@@ -130,6 +131,11 @@ const TokenDetail: React.FC = () => {
     tokenMap[t.symbol] = { symbol: t.symbol, decimals: t.decimals };
   });
 
+  // 格式化总供应量，考虑代币小数位数
+  const formattedTotalSupply = token && tokenStats 
+    ? formatTokenAmount(tokenStats.totalSupply, token.decimals)
+    : tokenStats?.totalSupply || '0';
+
   return (
     <div className={`min-h-screen ${isDark ? 'bg-dark-bg' : 'bg-gray-50'}`}>
       <Header isDark={isDark} />
@@ -201,7 +207,7 @@ const TokenDetail: React.FC = () => {
                     </span>
                   </div>
                   <p className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    <RollingNumber value={tokenStats.totalSupply} />
+                    <RollingNumber value={formattedTotalSupply} />
                   </p>
                 </div>
 

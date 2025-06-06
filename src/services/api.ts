@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 import { ApiResponse, Token, Transaction, AccountBalance, TransactionRange } from '../types';
 
 // API 基础 URL
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://index-service.zkid.app/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://explorer-service.vly.money/api';
 
 // 创建 axios 实例
 const apiClient = axios.create({
