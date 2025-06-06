@@ -217,7 +217,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, isDark }) =>
                   <p className={`text-sm font-medium ${
                     isDark ? 'text-gray-300' : 'text-gray-700'
                   }`}>
-                    Select Token:
+                    Select Token: 
                   </p>
                   <div className="flex space-x-3">
                     <button
@@ -261,7 +261,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, isDark }) =>
               <div className="space-y-2">
                 <p className={`text-xs font-medium ${
                   isDark ? 'text-gray-400' : 'text-gray-500'
-                } uppercase tracking-wider`}>
+                } tracking-wider`}>
                   Search Examples:
                 </p>
                 <div className="space-y-1">
@@ -285,7 +285,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, isDark }) =>
                         : 'text-gray-600 hover:text-gray-900'
                     } hover:underline transition-colors`}
                   >
-                    • Transaction Index: 201392 (select token above)
+                    • Transaction Index: 201392 ( select token above )
                   </button>
                 </div>
               </div>

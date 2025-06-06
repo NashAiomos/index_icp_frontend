@@ -5,31 +5,24 @@ import { Token } from '../types';
 import { formatTokenAmount } from '../utils/format';
 
 interface TokenCardProps {
-  symbol: string;
-  name: string;
-  totalTransactionCount: string;
-  totalSupply: string;
-  totalAddresses: number;
-  color?: 'blue' | 'purple';
+  token: Token & { 
+    totalSupply?: string; 
+    txCount?: number; 
+    accountCount?: number; 
+    transactions24h?: number;
+  };
   isDark?: boolean;
-  token?: Token;
 }
 
 const TokenCard: React.FC<TokenCardProps> = ({
-  symbol,
-  name,
-  totalTransactionCount,
-  totalSupply,
-  totalAddresses,
-  color = 'blue',
-  isDark,
-  token
+  token,
+  isDark = false
 }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
     // 简化导航，不再传递数据
-    navigate(`/token/${symbol}`);
+    navigate(`/token/${token.symbol}`);
   };
 
   // 根据symbol获取对应的logo路径
@@ -43,9 +36,9 @@ const TokenCard: React.FC<TokenCardProps> = ({
   };
 
   // 格式化总供应量，考虑代币小数位数
-  const formattedTotalSupply = token 
-    ? formatTokenAmount(totalSupply, token.decimals)
-    : totalSupply;
+  const formattedTotalSupply = token.totalSupply
+    ? formatTokenAmount(token.totalSupply, token.decimals)
+    : '0';
 
   return (
     <div 
@@ -58,14 +51,14 @@ const TokenCard: React.FC<TokenCardProps> = ({
       <div className="flex items-center mb-3 sm:mb-4 lg:mb-6">
         <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 flex items-center justify-center">
           <img 
-            src={getLogoPath(symbol)} 
-            alt={`${symbol} Logo`} 
+            src={getLogoPath(token.symbol)} 
+            alt={`${token.symbol} Logo`} 
             className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 object-contain"
           />
         </div>
         <div className="ml-2 sm:ml-3 lg:ml-4">
-          <h3 className={`text-lg sm:text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{symbol}</h3>
-          <p className={`text-xs sm:text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{name}</p>
+          <h3 className={`text-lg sm:text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{token.symbol}</h3>
+          <p className={`text-xs sm:text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{token.name}</p>
         </div>
       </div>
 
@@ -74,7 +67,7 @@ const TokenCard: React.FC<TokenCardProps> = ({
         <div className="text-center sm:text-left">
           <p className={`responsive-text-sm text-xs sm:text-sm mb-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Total Transactions</p>
           <p className={`responsive-text-base text-sm sm:text-base lg:text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'} break-all`}>
-            <RollingNumber value={totalTransactionCount} />
+            <RollingNumber value={token.txCount?.toString() || ''} />
           </p>
         </div>
         <div className="text-center sm:text-left">
@@ -86,7 +79,7 @@ const TokenCard: React.FC<TokenCardProps> = ({
         <div className="text-center sm:text-left">
           <p className={`responsive-text-sm text-xs sm:text-sm mb-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Holding Accounts</p>
           <p className={`responsive-text-base text-sm sm:text-base lg:text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'} break-all`}>
-            <RollingNumber value={totalAddresses.toString()} />
+            <RollingNumber value={token.accountCount?.toString() || ''} />
           </p>
         </div>
       </div>

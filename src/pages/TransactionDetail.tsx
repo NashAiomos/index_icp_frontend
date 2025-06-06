@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FiArrowLeft, FiCopy, FiCheckCircle, FiArrowUpRight, FiArrowDownLeft, FiPlus, FiMinus, FiShield } from 'react-icons/fi';
+import { FiArrowLeft, FiCopy, FiCheckCircle, FiArrowUpRight, FiArrowDownLeft, FiPlus, FiShield } from 'react-icons/fi';
 import { HiFire } from 'react-icons/hi';
 import Header from '../components/Header';
 import { ApiService } from '../services/api';

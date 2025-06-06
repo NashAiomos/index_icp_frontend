@@ -181,4 +181,46 @@ export class ApiService {
     }
     throw new Error(response.data.error || 'Failed to fetch account transactions');
   }
+
+  // 获取账户交易总数
+  static async getAccountTxCount(account: string, token?: string): Promise<{
+    account: string;
+    token: string;
+    transaction_count: number;
+  }> {
+    const params = token ? { token } : {};
+    const response = await withRetry(() => 
+      apiClient.get<ApiResponse<{
+        account: string;
+        token: string;
+        transaction_count: number;
+      }>>(`/account_tx_count/${account}`, { params })
+    );
+    
+    if (response.data.code === 200 && response.data.data) {
+      return response.data.data;
+    }
+    throw new Error(response.data.error || 'Failed to fetch account transaction count');
+  }
+
+  // 获取账户第一笔交易信息
+  static async getAccountFirstTransaction(account: string, token?: string): Promise<{
+    account: string;
+    token: string;
+    first_transaction: Transaction | null;
+  }> {
+    const params = token ? { token } : {};
+    const response = await withRetry(() => 
+      apiClient.get<ApiResponse<{
+        account: string;
+        token: string;
+        first_transaction: Transaction | null;
+      }>>(`/account_first_transaction/${account}`, { params })
+    );
+    
+    if (response.data.code === 200 && response.data.data) {
+      return response.data.data;
+    }
+    throw new Error(response.data.error || 'Failed to fetch account first transaction');
+  }
 } 

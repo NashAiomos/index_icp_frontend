@@ -19,7 +19,6 @@ interface AddressStats {
   totalTransactionCount: number;
   firstTransactionTime: number | null;
   lastTransactionTime: number | null;
-  transactionCount: number;
 }
 
 const AddressDetail: React.FC = () => {
@@ -29,8 +28,7 @@ const AddressDetail: React.FC = () => {
   const [addressStats, setAddressStats] = useState<AddressStats>({
     totalTransactionCount: 0,
     firstTransactionTime: null,
-    lastTransactionTime: null,
-    transactionCount: 0
+    lastTransactionTime: null
   });
   const [loading, setLoading] = useState(true);
   const [statsLoading, setStatsLoading] = useState(true);
@@ -175,35 +173,49 @@ const AddressDetail: React.FC = () => {
         
         setLoading(false);
 
-        // 使用获取到的交易数据计算统计信息
-        if (initialTransactions.length > 0) {
-          // 获取所有交易（用于统计）
-          const [allVusdResult, allLikeResult] = await Promise.all([
-            ApiService.getAccountTransactions(address, 'VUSD', 1000, 0).catch(() => ({ transactions: [] })),
-            ApiService.getAccountTransactions(address, 'LIKE', 1000, 0).catch(() => ({ transactions: [] }))
+        // 使用新的API获取交易统计信息
+        try {
+          // 并行获取VUSD和LIKE的交易统计信息
+          const [vusdTxCount, likeTxCount, vusdFirstTx, likeFirstTx] = await Promise.all([
+            ApiService.getAccountTxCount(address, 'VUSD').catch(() => ({ transaction_count: 0 })),
+            ApiService.getAccountTxCount(address, 'LIKE').catch(() => ({ transaction_count: 0 })),
+            ApiService.getAccountFirstTransaction(address, 'VUSD').catch(() => ({ first_transaction: null })),
+            ApiService.getAccountFirstTransaction(address, 'LIKE').catch(() => ({ first_transaction: null }))
           ]);
           
-          const allTransactions = [...allVusdResult.transactions, ...allLikeResult.transactions];
+          // 计算总交易数
+          const totalCount = vusdTxCount.transaction_count + likeTxCount.transaction_count;
           
-          if (allTransactions.length > 0) {
-            // 按时间戳排序
-            allTransactions.sort((a, b) => a.timestamp - b.timestamp);
-            
-            // 计算交易统计信息
-            setAddressStats({
-              totalTransactionCount: allTransactions.length,
-              firstTransactionTime: allTransactions[0].timestamp,
-              lastTransactionTime: allTransactions[allTransactions.length - 1].timestamp,
-              transactionCount: allTransactions.length
-            });
+          // 找到最早的交易
+          let firstTransactionTime: number | null = null;
+          const firstTransactions = [vusdFirstTx.first_transaction, likeFirstTx.first_transaction]
+            .filter(tx => tx !== null) as Transaction[];
+          
+          if (firstTransactions.length > 0) {
+            // 按时间戳排序，取最早的
+            firstTransactions.sort((a, b) => a.timestamp - b.timestamp);
+            firstTransactionTime = firstTransactions[0].timestamp;
           }
-        } else {
-          // 如果没有交易，设置默认值
+          
+          // 找到最晚的交易时间（从已加载的交易中获取）
+          let lastTransactionTime: number | null = null;
+          if (initialTransactions.length > 0) {
+            const sortedTx = [...initialTransactions].sort((a, b) => b.timestamp - a.timestamp);
+            lastTransactionTime = sortedTx[0].timestamp;
+          }
+          
+          setAddressStats({
+            totalTransactionCount: totalCount,
+            firstTransactionTime,
+            lastTransactionTime
+          });
+        } catch (error) {
+          console.error('Failed to fetch transaction stats:', error);
+          // 如果获取统计信息失败，设置默认值
           setAddressStats({
             totalTransactionCount: 0,
             firstTransactionTime: null,
-            lastTransactionTime: null,
-            transactionCount: 0
+            lastTransactionTime: null
           });
         }
         setStatsLoading(false);

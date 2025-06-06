@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import TokenCard from '../components/TokenCard';
 import TransactionTable from '../components/TransactionTable';
 import BackToTopButton from '../components/BackToTopButton';
 import { ApiService } from '../services/api';
-import { Transaction } from '../types';
 import { useTheme } from '../hooks/useTheme';
 import { useAutoRefreshTransactions } from '../hooks/useAutoRefreshTransactions';
 import { useGlobalCache } from '../contexts/GlobalCacheContext';
@@ -15,7 +14,7 @@ const HomePage: React.FC = () => {
   const isDark = useTheme();
 
   // 显示的交易数量
-  const DISPLAY_TRANSACTIONS = 100;
+  const DISPLAY_TRANSACTIONS = 20;
 
   // 使用自动刷新 hook
   const { 
@@ -96,30 +95,28 @@ const HomePage: React.FC = () => {
         {/* Token Cards */}
         <div className="grid grid-cols-2 md:grid-cols-2 gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 md:mb-8">
           {/* LIKE Token Card */}
-          {likeStats && (
+          {likeStats && cacheData.tokens.find(t => t.symbol === 'LIKE') && (
             <TokenCard
-              symbol="LIKE"
-              name={likeStats.name}
-              totalTransactionCount={likeStats.totalTransactionCount}
-              totalSupply={likeStats.totalSupply}
-              totalAddresses={likeStats.totalAddresses}
-              color="blue"
+              token={{
+                ...cacheData.tokens.find(t => t.symbol === 'LIKE')!,
+                totalSupply: likeStats.totalSupply,
+                txCount: parseInt(likeStats.totalTransactionCount),
+                accountCount: likeStats.totalAddresses
+              }}
               isDark={isDark}
-              token={cacheData.tokens.find(t => t.symbol === 'LIKE')}
             />
           )}
           
           {/* vUSD Token Card */}
-          {vusdStats && (
+          {vusdStats && cacheData.tokens.find(t => t.symbol === 'VUSD') && (
             <TokenCard
-              symbol="vUSD"
-              name={vusdStats.name}
-              totalTransactionCount={vusdStats.totalTransactionCount}
-              totalSupply={vusdStats.totalSupply}
-              totalAddresses={vusdStats.totalAddresses}
-              color="purple"
+              token={{
+                ...cacheData.tokens.find(t => t.symbol === 'VUSD')!,
+                totalSupply: vusdStats.totalSupply,
+                txCount: parseInt(vusdStats.totalTransactionCount),
+                accountCount: vusdStats.totalAddresses
+              }}
               isDark={isDark}
-              token={cacheData.tokens.find(t => t.symbol === 'VUSD')}
             />
           )}
         </div>
