@@ -127,4 +127,41 @@ export interface TokenStats {
   totalTransactionCount: string;
   transactions24h: number;
   totalAddresses: number;
+}
+
+// 余额历史记录
+export interface BalanceHistory {
+  account: string;
+  tx_index: number;
+  tx_type: string;
+  balance_before: string;
+  balance_after: string;
+  balance_change: string;
+  timestamp: number;
+  datetime?: string;
+  created_at: number;
+  token?: string;
+  token_name?: string;
+  decimals?: number;
+}
+
+// 余额历史响应
+export interface BalanceHistoryResponse {
+  account: string;
+  token: string;
+  total: number;
+  history: BalanceHistory[];
+}
+
+// 余额统计信息
+export interface BalanceStats {
+  account: string;
+  token: string;
+  token_name: string;
+  decimals: number;
+  total_records: number;
+  first_record_time: number;
+  last_record_time: number;
+  initial_balance: string;
+  current_balance: string;
 } 

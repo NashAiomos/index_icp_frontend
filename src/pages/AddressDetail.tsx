@@ -10,11 +10,6 @@ import BackToTopButton from '../components/BackToTopButton';
 import BalanceChartsContainer from '../components/BalanceChartsContainer';
 import { useAutoRefreshTransactions } from '../hooks/useAutoRefreshTransactions';
 
-// 扩展 Transaction 类型，添加代币信息
-interface TransactionWithToken extends Transaction {
-  tokenSymbol: string;
-}
-
 interface AddressStats {
   totalTransactionCount: number;
   firstTransactionTime: number | null;
@@ -111,12 +106,12 @@ const AddressDetail: React.FC = () => {
       ]);
       
       // 为交易添加代币标识
-      const vusdTransactions: TransactionWithToken[] = vusdResult.transactions.map(tx => ({
+      const vusdTransactions = vusdResult.transactions.map(tx => ({
         ...tx,
         tokenSymbol: 'VUSD'
       }));
       
-      const likeTransactions: TransactionWithToken[] = likeResult.transactions.map(tx => ({
+      const likeTransactions = likeResult.transactions.map(tx => ({
         ...tx,
         tokenSymbol: 'LIKE'
       }));
@@ -173,7 +168,7 @@ const AddressDetail: React.FC = () => {
         
         setLoading(false);
 
-        // 使用新的API获取交易统计信息
+        // 使用API获取交易统计信息
         try {
           // 并行获取VUSD和LIKE的交易统计信息
           const [vusdTxCount, likeTxCount, vusdFirstTx, likeFirstTx] = await Promise.all([
@@ -546,7 +541,6 @@ const AddressDetail: React.FC = () => {
             {/* 余额图表 */}
             <div className="mt-6">
               <BalanceChartsContainer 
-                transactions={transactions}
                 likeBalance={likeBalance}
                 vusdBalance={vusdBalance}
                 address={address || ''}

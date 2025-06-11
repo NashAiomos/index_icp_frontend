@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { ApiResponse, Token, Transaction, AccountBalance, TransactionRange } from '../types';
+import { ApiResponse, Token, Transaction, AccountBalance, TransactionRange, BalanceHistoryResponse, BalanceStats } from '../types';
 
 // API 基础 URL
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://explorer-service.vly.money/api';
@@ -222,5 +222,49 @@ export class ApiService {
       return response.data.data;
     }
     throw new Error(response.data.error || 'Failed to fetch account first transaction');
+  }
+
+  // 获取账户余额历史
+  static async getBalanceHistory(
+    account: string, 
+    options?: {
+      token?: string;
+      start_time?: number;
+      end_time?: number;
+      limit?: number;
+      skip?: number;
+      sort?: 'asc' | 'desc';
+    }
+  ): Promise<BalanceHistoryResponse> {
+    const params = {
+      ...(options?.token && { token: options.token }),
+      ...(options?.start_time && { start_time: options.start_time }),
+      ...(options?.end_time && { end_time: options.end_time }),
+      ...(options?.limit && { limit: options.limit }),
+      ...(options?.skip && { skip: options.skip }),
+      ...(options?.sort && { sort: options.sort })
+    };
+    
+    const response = await withRetry(() => 
+      apiClient.get<ApiResponse<BalanceHistoryResponse>>(`/balance_history/${account}`, { params })
+    );
+    
+    if (response.data.code === 200 && response.data.data) {
+      return response.data.data;
+    }
+    throw new Error(response.data.error || 'Failed to fetch balance history');
+  }
+
+  // 获取账户余额统计
+  static async getBalanceStats(account: string, token?: string): Promise<BalanceStats> {
+    const params = token ? { token } : {};
+    const response = await withRetry(() => 
+      apiClient.get<ApiResponse<BalanceStats>>(`/balance_stats/${account}`, { params })
+    );
+    
+    if (response.data.code === 200 && response.data.data) {
+      return response.data.data;
+    }
+    throw new Error(response.data.error || 'Failed to fetch balance stats');
   }
 } 

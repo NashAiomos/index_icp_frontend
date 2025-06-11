@@ -1,9 +1,8 @@
 import React from 'react';
 import BalanceChart from './BalanceChart';
-import { Transaction, AccountBalance } from '../types';
+import { AccountBalance } from '../types';
 
 interface BalanceChartsContainerProps {
-  transactions: Transaction[];
   likeBalance: AccountBalance | null;
   vusdBalance: AccountBalance | null;
   address: string;
@@ -11,7 +10,6 @@ interface BalanceChartsContainerProps {
 }
 
 const BalanceChartsContainer: React.FC<BalanceChartsContainerProps> = ({
-  transactions,
   likeBalance,
   vusdBalance,
   address,
@@ -56,19 +54,17 @@ const BalanceChartsContainer: React.FC<BalanceChartsContainerProps> = ({
             </span>
           </div>
           <BalanceChart
-            transactions={transactions}
             tokenSymbol="LIKE"
-            currentBalance={likeBalance.balance}
-            decimals={likeBalance.decimals}
             address={address}
             isDark={isDark}
+            decimals={likeBalance.decimals}
           />
         </div>
       )}
 
       {/* VUSD Balance Chart */}
       {vusdBalance && (
-        <div>
+        <div className={likeBalance ? 'mt-8' : ''}>
           <div className="flex items-center mb-4">
             <img 
               src="/logo_vusd.svg" 
@@ -87,12 +83,10 @@ const BalanceChartsContainer: React.FC<BalanceChartsContainerProps> = ({
             </span>
           </div>
           <BalanceChart
-            transactions={transactions}
             tokenSymbol="VUSD"
-            currentBalance={vusdBalance.balance}
-            decimals={vusdBalance.decimals}
             address={address}
             isDark={isDark}
+            decimals={vusdBalance.decimals}
           />
         </div>
       )}
