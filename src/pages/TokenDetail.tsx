@@ -28,7 +28,6 @@ const TokenDetail: React.FC = () => {
   const { symbol } = useParams<{ symbol: string }>();
   const isDark = useTheme();
   const { getTokenStats, getToken, data: cacheData } = useGlobalCache();
-  const [error, setError] = useState<string | null>(null);
   
   // 处理symbol映射：vUSD -> VUSD
   const apiSymbol = symbol === 'vUSD' ? 'VUSD' : symbol || '';
@@ -49,9 +48,9 @@ const TokenDetail: React.FC = () => {
         _tokenSymbol: apiSymbol
       }));
     } catch (err) {
-      console.error('Failed to fetch transactions:', err);
-      // 记录错误但不抛出，避免整个组件崩溃
-      setError(`获取交易记录失败: ${err instanceof Error ? err.message : '未知错误'}`);
+      // 根据用户要求，在控制台用英文报错，并隐藏UI错误
+      console.error(`Failed to fetch transaction records: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      // 返回空数组，自动刷新机制会进行重试
       return [];
     }
   }, [apiSymbol]);
@@ -141,12 +140,6 @@ const TokenDetail: React.FC = () => {
       <Header isDark={isDark} />
       
       <main className="container mx-auto px-2 sm:px-4 md:px-6 lg:px-12" style={{ paddingTop: '0.5rem', paddingBottom: '1rem' }}>
-        {error && (
-          <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-lg mb-6">
-            {error}
-          </div>
-        )}
-
         {token && tokenStats ? (
           <>
             {/* Token Info Card */}
@@ -261,11 +254,6 @@ const TokenDetail: React.FC = () => {
             <div className={isDark ? 'text-gray-400' : 'text-gray-500'}>
             No transactions found
             </div>
-            {error && (
-              <div className="mt-4 text-sm text-red-500">
-                {error}
-              </div>
-            )}
           </div>
         ) : (
           <TransactionTable 

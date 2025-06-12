@@ -38,7 +38,7 @@ const BalanceChartsContainer: React.FC<BalanceChartsContainerProps> = ({
         <div>
           <div className="flex items-center mb-4">
             <img 
-              src="/logo_like.svg" 
+              src="/logo_like.svg"
               alt="LIKE Logo" 
               className="w-6 h-6 mr-2"
             />
@@ -67,8 +67,8 @@ const BalanceChartsContainer: React.FC<BalanceChartsContainerProps> = ({
         <div className={likeBalance ? 'mt-8' : ''}>
           <div className="flex items-center mb-4">
             <img 
-              src="/logo_vusd.svg" 
-              alt="vUSD Logo" 
+              src="/logo_vusd.svg"
+              alt="vUSD Logo"
               className="w-6 h-6 mr-2"
             />
             <h3 className={`text-lg font-semibold ${
