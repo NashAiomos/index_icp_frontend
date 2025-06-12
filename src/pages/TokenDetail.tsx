@@ -48,7 +48,7 @@ const TokenDetail: React.FC = () => {
         _tokenSymbol: apiSymbol
       }));
     } catch (err) {
-      // 根据用户要求，在控制台用英文报错，并隐藏UI错误
+      // 在控制台报错
       console.error(`Failed to fetch transaction records: ${err instanceof Error ? err.message : 'Unknown error'}`);
       // 返回空数组，自动刷新机制会进行重试
       return [];
